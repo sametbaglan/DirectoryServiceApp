@@ -1,3 +1,6 @@
+using Directory.API.Filter;
+using Directory.Core.Dto.Mapping;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +31,18 @@ namespace Directory.API
         {
 
             services.AddControllers();
+            services.AddMvc(x =>
+            {
+                x.Filters.Add(typeof(ValidationActionsFilter));
+            }).AddFluentValidation(x => x.RegisterValidatorsFromAssemblyContaining<Startup>())
+            .AddSessionStateTempDataProvider();
+            services.AddSession();
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            services.AddAutoMapper(typeof(MapProfile));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Directory.API", Version = "v1" });
