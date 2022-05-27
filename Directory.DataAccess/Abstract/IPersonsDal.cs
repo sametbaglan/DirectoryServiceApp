@@ -1,0 +1,9 @@
+﻿using Directory.Core.RepositoryDesign.Abstract;
+using Directory.Entity.Concrete;
+
+namespace Directory.DataAccess.Abstract
+{
+    public interface IPersonsDal : IRepository<Persons>
+    {
+    }
+}

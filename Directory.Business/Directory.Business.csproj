@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Directory.DataAccess\Directory.DataAccess.csproj" />
+    <ProjectReference Include="..\Directory.Entity\Directory.Entity.csproj" />
+  </ItemGroup>
+
+</Project>
