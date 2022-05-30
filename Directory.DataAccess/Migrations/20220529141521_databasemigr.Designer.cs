@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Directory.DataAccess.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220527173548_directorymigration")]
-    partial class directorymigration
+    [Migration("20220529141521_databasemigr")]
+    partial class databasemigr
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,20 +37,78 @@ namespace Directory.DataAccess.Migrations
                     b.Property<string>("InfoContent")
                         .HasColumnType("text");
 
-                    b.Property<string>("InfoType")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("ModifyDate")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("infotypeid")
+                        .HasColumnType("integer");
 
                     b.Property<int>("personid")
                         .HasColumnType("integer");
 
                     b.HasKey("id");
 
+                    b.HasIndex("infotypeid");
+
                     b.HasIndex("personid");
 
                     b.ToTable("ContactInformation");
+                });
+
+            modelBuilder.Entity("Directory.Entity.Concrete.InfoType", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("Delete")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ModifyDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("type")
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
+
+                    b.ToTable("InfoType");
+                });
+
+            modelBuilder.Entity("Directory.Entity.Concrete.Location", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .UseIdentityByDefaultColumn();
+
+                    b.Property<string>("County")
+                        .HasColumnType("text");
+
+                    b.Property<string>("city")
+                        .HasColumnType("text");
+
+                    b.Property<int>("contactinformationid")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("country")
+                        .HasColumnType("text");
+
+                    b.Property<string>("street")
+                        .HasColumnType("text");
+
+                    b.Property<string>("zipcode")
+                        .HasColumnType("text");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("contactinformationid");
+
+                    b.ToTable("Location");
                 });
 
             modelBuilder.Entity("Directory.Entity.Concrete.Persons", b =>
@@ -85,13 +143,42 @@ namespace Directory.DataAccess.Migrations
 
             modelBuilder.Entity("Directory.Entity.Concrete.ContactInformation", b =>
                 {
+                    b.HasOne("Directory.Entity.Concrete.InfoType", "InfoType")
+                        .WithMany("contactInformations")
+                        .HasForeignKey("infotypeid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Directory.Entity.Concrete.Persons", "persons")
                         .WithMany("contactInformations")
                         .HasForeignKey("personid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("InfoType");
+
                     b.Navigation("persons");
+                });
+
+            modelBuilder.Entity("Directory.Entity.Concrete.Location", b =>
+                {
+                    b.HasOne("Directory.Entity.Concrete.ContactInformation", "contact")
+                        .WithMany("Locations")
+                        .HasForeignKey("contactinformationid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("contact");
+                });
+
+            modelBuilder.Entity("Directory.Entity.Concrete.ContactInformation", b =>
+                {
+                    b.Navigation("Locations");
+                });
+
+            modelBuilder.Entity("Directory.Entity.Concrete.InfoType", b =>
+                {
+                    b.Navigation("contactInformations");
                 });
 
             modelBuilder.Entity("Directory.Entity.Concrete.Persons", b =>

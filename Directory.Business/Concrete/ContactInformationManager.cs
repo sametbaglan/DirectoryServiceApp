@@ -19,12 +19,17 @@ namespace Directory.Business.Concrete
 
         public List<ContactInformation> GetAll()
         {
-            return _contactInformationDal.GetAll();
+            return _contactInformationDal.GetAll(x=>x.Delete==false);
         }
 
         public ContactInformation GetById(int id)
         {
             return _contactInformationDal.GetById(id);
+        }
+
+        public ContactInformation GetPersonContactid(int id)
+        {
+            return _contactInformationDal.GetPersonContactid(id);
         }
 
         public void Update(ContactInformation entity)

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Directory.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class PersonController : BaseCustomController
     {
@@ -24,14 +24,14 @@ namespace Directory.API.Controllers
         public IActionResult GetAll()
         {
             var list = _personService.GetAll();
-            return CreateActionResult(Response<List<PersonsDto>>.Success(_mapper.Map<List<PersonsDto>>(list),200));
+            return CreateActionResult(Response<List<PersonAddDto>>.Success(_mapper.Map<List<PersonAddDto>>(list),200));
 
         }
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
             var entity = _personService.GetById(id);
-            return CreateActionResult(Response<PersonsDto>.Success(_mapper.Map<PersonsDto>(entity),200));
+            return CreateActionResult(Response<PersonAddDto>.Success(_mapper.Map<PersonAddDto>(entity),200));
 
         }
         [HttpPost("{id}")]
@@ -43,7 +43,7 @@ namespace Directory.API.Controllers
             return CreateActionResult(Response<PersonsDto>.Success(200));
         }
         [HttpPost]
-        public IActionResult Update(PersonsDto personsDto)
+        public IActionResult Update(PersonAddDto personsDto)
         {
             var entity = _personService.GetById(personsDto.id);
             entity.ModifyDate = System.DateTime.Now;
@@ -54,7 +54,7 @@ namespace Directory.API.Controllers
             return CreateActionResult(Response<PersonsDto>.Success(200));
         }
         [HttpPost]
-        public IActionResult Add(PersonsDto personsDto)
+        public IActionResult Add(PersonAddDto personsDto)
         {
             var entity = new Persons
             {

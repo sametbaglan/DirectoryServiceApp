@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Directory.API.Controllers
 {
-
-
     public class BaseCustomController : ControllerBase
     {
         [NonAction]
+        //!utqRE8yTW!v@Ls
         public IActionResult CreateActionResult<T>(Response<T> response)
         {
             if (response.statuscode == 204)

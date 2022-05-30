@@ -19,7 +19,7 @@ namespace Directory.Business.Concrete
 
         public List<Persons> GetAll()
         {
-            return _personsDal.GetAll();
+            return _personsDal.GetAll(x=>x.Delete==false);
         }
 
         public Persons GetById(int id)

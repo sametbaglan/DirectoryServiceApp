@@ -3,8 +3,7 @@ using Directory.Entity.Concrete;
 
 namespace Directory.DataAccess.Abstract
 {
-    public interface IContactInformationDal : IRepository<ContactInformation>
+    public interface IInfoTypeDal:IRepository<InfoType>
     {
-        ContactInformation GetPersonContactid(int id);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Directory.Core.RepositoryDesign.Abstract;
+﻿using AutoMapper;
+using Directory.Core.RepositoryDesign.Abstract;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace Directory.DataAccess.Concrete.EfCore
 {
-    public class EfRepositoryDal<T, TContext> : IRepository<T> where T : class where TContext : DbContext, new()
+    public class EfRepositoryDal<T, TContext> : IRepository<T> where T : class  where TContext : DbContext, new()
     {
         public void Create(T entity)
         {
@@ -26,7 +27,6 @@ namespace Directory.DataAccess.Concrete.EfCore
                       : db.Set<T>().Where(filter).ToList();
             }
         }
-
         public T GetById(int id)
         {
             using (var db = new TContext())
